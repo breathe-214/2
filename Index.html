@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>breathe | Therapy Oasis</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kombu-green: #2D3E33;
+            --deep-green: #1B2620;
+            --beige-accent: #D4C9B0;
+            --light-beige: #FDFCF0;
+            --white: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #2D3E33;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --kombu-green: #FDFCF0;
+            --deep-green: #0a0e0c;
+            --beige-accent: #4a5d4e;
+            --light-beige: #1B2620;
+            --white: #2D3E33;
+            --text-main: #FDFCF0;
+            --glass: rgba(0, 0, 0, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-beige);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--deep-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .leaf-loader {
+            font-size: 3rem;
+            color: var(--beige-accent);
+            animation: floatLeaf 3s infinite ease-in-out;
+        }
+
+        @keyframes floatLeaf {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-50px) rotate(45deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(90deg); opacity: 0; }
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: #8fa88a; }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--beige-accent); }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+
+        .contact-top { font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(27, 38, 32, 0.7), rgba(27, 38, 32, 0.7)), 
+                        url('https://i.pinimg.com/736x/21/2e/0a/212e0a2936a2202613d9a6064f26938a.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .typewriter {
+            border-right: 3px solid var(--beige-accent);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--beige-accent); } }
+
+        .badges-container { display: flex; gap: 15px; margin-bottom: 2rem; }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--beige-accent);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(212, 201, 176, 0.3);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow { from { box-shadow: 0 0 5px rgba(212, 201, 176, 0.2); } to { box-shadow: 0 0 20px rgba(212, 201, 176, 0.6); } }
+
+        .hero-text { font-size: 1.2rem; max-width: 700px; margin-bottom: 3rem; opacity: 0.9; }
+
+        .exception-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 3rem;
+        }
+
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary { background: var(--beige-accent); color: var(--deep-green); }
+        .btn-outline { border: 1px solid white; color: white; background: transparent; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* Sections General */
+        section { padding: 100px 8%; }
+        .section-title { font-size: 2.5rem; margin-bottom: 3rem; text-align: center; position: relative; }
+        .section-title::after { content: ''; width: 60px; height: 3px; background: var(--beige-accent); position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
+
+        /* Grid Layouts */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .card:active { transform: scale(0.95); }
+
+        .card h3 { margin-bottom: 1rem; color: var(--kombu-green); }
+        .card p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem; }
+        .rating { color: #f1c40f; margin-bottom: 1rem; }
+
+        /* Services specific */
+        .time-table-card { border-left: 5px solid var(--beige-accent); }
+        .time-table-list { list-style: none; font-size: 0.85rem; }
+        .time-table-list li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
+        .holiday-note { font-style: italic; font-size: 0.7rem; color: #888; margin-top: 15px; }
+
+        /* Resources */
+        .resource-card {
+            background: var(--kombu-green);
+            color: var(--light-beige);
+            text-align: center;
+        }
+        .resource-card h3 { color: var(--light-beige); }
+
+        /* Journal Page */
+        #journal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--deep-green);
+            z-index: 2000;
+            display: none;
+            padding: 50px;
+        }
+
+        .notebook {
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            padding: 60px 40px;
+            background-image: linear-gradient(#e1e1e1 1px, transparent 1px);
+            background-size: 100% 30px;
+            position: relative;
+        }
+
+        .notebook::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 60px;
+            height: 100%; width: 2px;
+            background: rgba(255,0,0,0.2);
+        }
+
+        .notebook textarea {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            resize: none;
+            font-size: 1.2rem;
+            line-height: 30px;
+            padding-left: 40px;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+        }
+
+        .close-journal {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-green);
+            color: white;
+            padding: 80px 8% 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-links a { color: white; text-decoration: none; display: block; margin: 10px 0; opacity: 0.7; }
+        .social-icons { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+        .social-icons i { font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+        .social-icons i:hover { color: var(--beige-accent); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .hero-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="leaf-loader"><i class="fas fa-leaf"></i></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-leaf"></i> breathe
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#therapists">Therapists</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#resources">Resources</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <span class="contact-top">breathe.24@gmail.com</span>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="badges-container">
+            <div class="badge">easy reach therapy</div>
+            <div class="badge">Dr El Bourachedy Zineb (Nearest to you)</div>
+        </div>
+        <h1 class="typewriter">therapy Oasis</h1>
+        <p class="hero-text">Find your calm, wherever you are. Access therapy from the comfort of your space with our curated network of professionals.</p>
+        
+        <div class="exception-card">
+            <h3 style="margin-bottom: 15px;">Therapy Session Packages</h3>
+            <p>Healing Session — 300 DH | Mindful Hour — 500 DH</p>
+        </div>
+
+        <div class="hero-buttons">
+            <a href="#therapists" class="btn btn-primary">select your therapist</a>
+            <a href="#resources" class="btn btn-outline">video call sessions</a>
+            <a href="#services" class="btn btn-outline">Schedule</a>
+            <button onclick="openJournal()" class="btn btn-primary" style="background: #8fa88a; color: white;">personal journal</button>
+        </div>
+    </section>
+
+    <!-- Therapists Section -->
+    <section id="therapists">
+        <h2 class="section-title">available therapist</h2>
+        <div class="grid-container" id="therapistGrid">
+            <!-- Card 1 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr El Bourachedy Zineb</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Bureau N2, 517 Bd Tadla, MOHAMMÉDIA 28830</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.7 stars
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr bousselham mariam</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Fb, 09 Bd de Riyad, Mohammédia 20800</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.8 stars
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr El Mousadik Assia</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> el fajr, Bd de Riyad, Boulevard mohammed 6, Mohammedia</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.7 stars
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr Mouchtaq Nadia</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 15 Rue Abdelmoumen, Mohammédia 28810</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.1 stars
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr Ghalami Sara</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 2ème étage n41, Immeuble 173 Av. Mers Sultan, Casablanca 20250</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.7 stars
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Pr Youssef El hamaoui</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 227 Bd Ghandi, Casablanca 20250</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.4 stars
+                </div>
+            </div>
+            <!-- Card 7 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr Dounia Belghazi</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Résidence Amsterdam, Angle 2mars et rue Amstardam, Casablanca</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.4 stars
+                </div>
+            </div>
+            <!-- Card 8 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr BelMoukari Hajar</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 3ème étage, Hay massira 1 A-Imm.79, Marrakech</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.9 stars
+                </div>
+            </div>
+            <!-- Card 9 -->
+            <div class="card" onclick="location.href='#services'">
+                <div>
+                    <h3>Dr Nisrine Abdelhay</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> n°3 2ème étage, au dessus de crédit du maroc, Bouskoura</p>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i> 4.7 stars
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" style="background: var(--white);">
+        <h2 class="section-title">time table</h2>
+        <div class="grid-container">
+            <!-- TT 1 -->
+            <div class="card time-table-card">
+                <h3>Dr Nisrine Abdelhay</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>9:30 AM – 5:30 PM</span></li>
+                    <li><span>Saturday</span> <span>9:30 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 2 -->
+            <div class="card time-table-card">
+                <h3>Dr Hajar BelMoukari</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>8:30 AM – 4:30 PM</span></li>
+                    <li><span>Saturday</span> <span>9 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 3 -->
+            <div class="card time-table-card">
+                <h3>Dr Ghalami Sara</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>10 AM – 6 PM</span></li>
+                    <li><span>Saturday</span> <span>10 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 4 -->
+            <div class="card time-table-card">
+                <h3>Pr Youssef El hamaoui</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>10 AM – 6 PM</span></li>
+                    <li><span>Saturday</span> <span>10:30 AM – 2:30 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 5 -->
+            <div class="card time-table-card">
+                <h3>Dr El Bourachedy Zineb</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>9 AM – 4:30 PM</span></li>
+                    <li><span>Saturday</span> <span>9:30 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 6 -->
+            <div class="card time-table-card">
+                <h3>Dr Bousselham mariam</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>9 AM – 5:30 PM</span></li>
+                    <li><span>Saturday</span> <span>9 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 7 -->
+            <div class="card time-table-card">
+                <h3>Dr El Mousadik Assia</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>9 AM – 5 PM</span></li>
+                    <li><span>Sat - Sun</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 8 -->
+            <div class="card time-table-card">
+                <h3>Dr Mouchtaq Nadia</h3>
+                <ul class="time-table-list">
+                    <li><span>Wed - Fri</span> <span>10 AM – 7 PM</span></li>
+                    <li><span>Saturday</span> <span>10 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+            <!-- TT 9 -->
+            <div class="card time-table-card">
+                <h3>Dr Belghazi Dounia</h3>
+                <ul class="time-table-list">
+                    <li><span>Mon - Fri</span> <span>9 AM – 6 PM</span></li>
+                    <li><span>Saturday</span> <span>9 AM – 1 PM</span></li>
+                    <li><span>Sunday</span> <span>Closed</span></li>
+                </ul>
+                <p class="holiday-note">this time might change during the holidays</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources">
+        <h2 class="section-title">Resources</h2>
+        <div class="grid-container">
+            <div class="card resource-card">
+                <i class="fas fa-video" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <h3>video calls</h3>
+                <div style="text-align: left; margin-top: 20px;">
+                    <p>Dr Zineb: 0629079010</p>
+                    <p>Dr Mariam: 0689882415</p>
+                    <p>Dr Nadia: 0687052522</p>
+                    <p>Dr Sara: 0615460262</p>
+                    <p>Pr Youssef: 0600080052</p>
+                </div>
+            </div>
+            <div class="card resource-card" onclick="openJournal()" style="background: var(--beige-accent); color: var(--deep-green);">
+                <i class="fas fa-book" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--deep-green);">personal journal</h3>
+                <p>A safe space to release your thoughts. Click to start writing your journey.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journal Overlay -->
+    <div id="journal-overlay">
+        <span class="close-journal" onclick="closeJournal()">&times; Close</span>
+        <div class="notebook">
+            <textarea placeholder="Dear Journal, today I feel..."></textarea>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>breathe</h3>
+                <p>Healing minds, one breath at a time.</p>
+                <div class="social-icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#therapists">Therapists</a>
+                <a href="#services">Timetable</a>
+                <a href="#resources">Resources</a>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>Email: breathe.24@gmail.com</p>
+                <p>Location: Morocco</p>
+            </div>
+        </div>
+        <p>&copy; 2026 breathe - calm and Mobil. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 1000);
+            }, 2000);
+        });
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        let isDark = false;
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Journal Logic
+        function openJournal() {
+            document.getElementById('journal-overlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeJournal() {
+            document.getElementById('journal-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.padding = '0.5rem 5%';
+                header.style.background = 'rgba(27, 38, 32, 0.9)';
+                header.style.color = 'white';
+            } else {
+                header.style.padding = '1rem 5%';
+                header.style.background = 'var(--glass)';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
